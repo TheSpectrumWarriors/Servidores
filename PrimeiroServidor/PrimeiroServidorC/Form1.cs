@@ -20,21 +20,26 @@ namespace PrimeiroServidorC
         private TcpClient client;
         public StreamReader STR;
         public StreamWriter STW;
-        public string receive;
+        public List<TcpClient> listClients;
+        public List<StreamReader> listSTR;
+        public List<StreamWriter> listSTW;
+        static public string receive;
         public String text_to_send;
         public string nick;
+        public static TextBox textBox;
 
-        public Form1()
-        {
+        public Form1() {
             InitializeComponent();
+
+            listClients = new List<TcpClient>();
+            listSTR = new List<StreamReader>();
+            listSTW = new List<StreamWriter>();
 
 
             IPAddress[] localIP = Dns.GetHostAddresses(Dns.GetHostName());         // saber o meu proprio IP
 
-            foreach(IPAddress address in localIP)
-            {
-                if(address.AddressFamily == AddressFamily.InterNetwork)
-                {
+            foreach (IPAddress address in localIP) {
+                if (address.AddressFamily == AddressFamily.InterNetwork) {
                     textBox3.Text = address.ToString();
 
                 }
@@ -131,18 +136,63 @@ namespace PrimeiroServidorC
             while (true) {
                 if (listener.Pending()) {
                     client = listener.AcceptTcpClient();
+                    listClients.Add(client);
                     break;
                 }
             }
 
             STR = new StreamReader(client.GetStream());
             STW = new StreamWriter(client.GetStream());
+            listSTR.Add(STR);
+            listSTW.Add(STW);
             STW.AutoFlush = true;
 
-            backgroundWorker1.RunWorkerAsync();                                  // Começar a receber Data em background
+            Thread threadClient = new Thread(ClientThread);
+            threadClient.Start();
+            // Começar a receber Data em background
             backgroundWorker2.WorkerSupportsCancellation = true;                 // Abilidade para cancelar this thread
 
         }
 
+        private void ClientThread() {
+            int i = listClients.Count -1;
+
+            while (listClients[i].Connected) {
+                try {
+                    Form1.receive = listSTR[i].ReadLine();
+                    textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText(Form1.receive + "\n"); }));  //ERRRRRRROOOOO
+                    Form1.receive = "";
+                } catch (Exception x) {
+                    MessageBox.Show(x.Message.ToString());
+                }
+            }
+
+        }
+
     }
+
+    public class ClientClass {
+
+        private TcpClient client;
+        public StreamReader STR;
+        public StreamWriter STW;
+
+        ClientClass(TcpClient client, StreamReader input, StreamWriter output) {
+
+            this.client = client;
+            this.STR = input;
+            this.STW = output;
+
+            Thread threadClient = new Thread(Run);
+            threadClient.Start();
+
+        }
+
+        private void Run() {
+            
+        }
+    }
+
 }
+
+    
