@@ -22,6 +22,7 @@ namespace PrimeiroServidorC
         public StreamWriter STW;
         public string receive;
         public String text_to_send;
+        public string nick;
 
         public Form1()
         {
@@ -40,11 +41,11 @@ namespace PrimeiroServidorC
 
             }
 
-
         }
 
         private void button2_Click(object sender, EventArgs e)                    // Ligar o Servidor
         {
+            nick = textBox7.Text;
             backgroundWorker3.RunWorkerAsync();
 
         }
@@ -56,7 +57,7 @@ namespace PrimeiroServidorC
                 try
                 {
                     receive = STR.ReadLine();
-                    this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText("You: " + receive + "\n"); }));
+                    this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText(receive + "\n"); }));
                     receive = "";
                 }
                 catch(Exception x)
@@ -71,8 +72,8 @@ namespace PrimeiroServidorC
 
             if(client.Connected)
             {
-                STW.WriteLine(text_to_send);
-                this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText("Me: " + text_to_send + "\n"); }));
+                STW.WriteLine(nick + ": " + text_to_send);
+                this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText(nick + ": " + text_to_send + "\n"); }));
                 
             }
             else
@@ -83,7 +84,7 @@ namespace PrimeiroServidorC
 
         private void button3_Click(object sender, EventArgs e)                   // Conectar ao Servidor
         {
-
+            nick = textBox7.Text;
             client = new TcpClient();
             IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse(textBox5.Text), int.Parse(textBox6.Text));
 
@@ -92,7 +93,6 @@ namespace PrimeiroServidorC
                 client.Connect(IP_End);
                 if(client.Connected)
                 {
-
                     textBox2.AppendText("Connected to Server" + "\n");
                     STR = new StreamReader(client.GetStream());
                     STW = new StreamWriter(client.GetStream());
@@ -141,5 +141,6 @@ namespace PrimeiroServidorC
             backgroundWorker2.WorkerSupportsCancellation = true;                 // Abilidade para cancelar this thread
 
         }
+
     }
 }
