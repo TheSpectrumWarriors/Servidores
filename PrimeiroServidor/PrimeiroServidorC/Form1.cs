@@ -72,7 +72,7 @@ namespace PrimeiroServidorC
             if(client.Connected)
             {
                 STW.WriteLine(text_to_send);
-                this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText("Me: " + receive + "\n"); }));
+                this.textBox2.Invoke(new MethodInvoker(delegate () { textBox2.AppendText("Me: " + text_to_send + "\n"); }));
                 
             }
             else
