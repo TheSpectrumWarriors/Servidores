@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("V3.1-Servidor-Client")]
+[assembly: AssemblyTitle("V3.2-Servidor-Server")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("V3.1-Servidor-Client")]
+[assembly: AssemblyProduct("V3.2-Servidor-Server")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("68923db8-6032-4ec6-bfca-50053cb11c70")]
+[assembly: Guid("dfcd7a69-6147-488c-8327-f164c5bd536b")]
 
 // Version information for an assembly consists of the following four values:
 //
