@@ -17,16 +17,20 @@ namespace PrimeiroServidorC
 {
     public partial class Form1 : Form
     {
-        private TcpClient client;
-        public StreamReader STR;
-        public StreamWriter STW;
+        private List<TcpClient> clients; // *AQUI*
+        public List<StreamReader> STR; // *AQUI*
+        public List<StreamWriter> STW; // *AQUI*
         public string receive;
         public String text_to_send;
         public string nick;
+        public int number_of_clients;
 
         public Form1()
         {
             InitializeComponent();
+            clients = new List<TcpClient>();
+            STR = new List<StreamReader>();
+            STW = new List<StreamWriter>();
 
 
             IPAddress[] localIP = Dns.GetHostAddresses(Dns.GetHostName());         // saber o meu proprio IP
@@ -52,7 +56,7 @@ namespace PrimeiroServidorC
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) // Receber Data
         {
-            while(client.Connected)
+            while(clients.Connected)
             {
                 try
                 {
@@ -85,7 +89,7 @@ namespace PrimeiroServidorC
         private void button3_Click(object sender, EventArgs e)                   // Conectar ao Servidor
         {
             nick = textBox7.Text;
-            client = new TcpClient();
+            clients.Add(new TcpClient()); // *AQUI*
             IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse(textBox5.Text), int.Parse(textBox6.Text));
 
                 try
@@ -94,8 +98,8 @@ namespace PrimeiroServidorC
                 if(client.Connected)
                 {
                     textBox2.AppendText("Connected to Server" + "\n");
-                    STR = new StreamReader(client.GetStream());
-                    STW = new StreamWriter(client.GetStream());
+                    STR.Add(new StreamReader(clients[STR.Count + 1].(GetStream()); // *AQUI* - O indice do novo elemento da lista STR vai ser o tamanho da lista + 1. Ou seja, clients[STR.count +1] é o client para o qual queremos adicionar um STR
+                    STW = new StreamWriter(client.GetStream()); // *AQUI* - Falta mudar
                     STW.AutoFlush = true;
 
                     STW.WriteLine(nick + " juntou-se ao chat!");
