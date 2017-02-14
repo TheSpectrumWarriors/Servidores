@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Threading;
 
 namespace PrimeiroServidorC
 {
@@ -44,16 +45,7 @@ namespace PrimeiroServidorC
 
         private void button2_Click(object sender, EventArgs e)                    // Ligar o Servidor
         {
-
-            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(textBox4.Text));
-            listener.Start();
-            client = listener.AcceptTcpClient();
-            STR = new StreamReader(client.GetStream());
-            STW = new StreamWriter(client.GetStream());
-            STW.AutoFlush = true;
-
-            backgroundWorker1.RunWorkerAsync();                                  // Começar a receber Data em background
-            backgroundWorker2.WorkerSupportsCancellation = true;                 // Abilidade para cancelar this thread
+            backgroundWorker3.RunWorkerAsync();
 
         }
 
@@ -129,6 +121,26 @@ namespace PrimeiroServidorC
             }
 
             textBox1.Text = "";
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e) {
+            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(textBox4.Text));
+            listener.Start();
+            while (true) {
+                if (listener.Pending()) {
+                    client = listener.AcceptTcpClient();
+                    break;
+                }
+                Thread.Sleep(10000);
+            }
+
+            STR = new StreamReader(client.GetStream());
+            STW = new StreamWriter(client.GetStream());
+            STW.AutoFlush = true;
+
+            backgroundWorker1.RunWorkerAsync();                                  // Começar a receber Data em background
+            backgroundWorker2.WorkerSupportsCancellation = true;                 // Abilidade para cancelar this thread
+
         }
     }
 }
