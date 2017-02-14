@@ -131,7 +131,6 @@ namespace PrimeiroServidorC
                     client = listener.AcceptTcpClient();
                     break;
                 }
-                Thread.Sleep(10000);
             }
 
             STR = new StreamReader(client.GetStream());
