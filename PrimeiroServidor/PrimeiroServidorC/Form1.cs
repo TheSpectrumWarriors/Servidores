@@ -98,6 +98,8 @@ namespace PrimeiroServidorC
                     STW = new StreamWriter(client.GetStream());
                     STW.AutoFlush = true;
 
+                    STW.WriteLine(nick + " juntou-se ao chat!");
+
                     backgroundWorker1.RunWorkerAsync();                                  // Começar a receber Data em background
                     backgroundWorker2.WorkerSupportsCancellation = true;                 // Abilidade para cancelar this thread
 
